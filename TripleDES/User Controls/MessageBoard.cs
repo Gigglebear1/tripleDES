@@ -19,12 +19,8 @@ namespace TripleDES.User_Controls
         {
             InitializeComponent();
             fillToBox();
-
-            var timer = new System.Threading.Timer(
-            e => fillInbox(),
-            null,
-            TimeSpan.Zero,
-            TimeSpan.FromMinutes(.25));
+            fillInbox();
+          
         }
 
         private void bttnLogOut_Click(object sender, EventArgs e)
@@ -62,32 +58,6 @@ namespace TripleDES.User_Controls
             cbTo.SelectedIndex = 0;
         }
 
-        delegate void SetTextCallback(ListBox text);
-
-        private void SetText(ListBox text)
-        {
-            // InvokeRequired required compares the thread ID of the
-            // calling thread to the thread ID of the creating thread.
-            // If these threads are different, it returns true.
-            if (this.lbInbox.InvokeRequired)
-            {
-                SetTextCallback d = new SetTextCallback(SetText);
-                this.Invoke(d, new object[] { text });
-            }
-            else
-            {
-                this.lbInbox.Items.Clear();
-
-                for (int i = text.Items.Count - 1; i >= 0; i--)
-                {
-                    // do with listBox1.Items[i]
-
-                    lbInbox.Items.Add(text.Items[i]);
-                }
-                this.lbInbox = text;
-            }
-        }
-
         /// <summary>
         /// empty and then fill the inbox
         /// </summary>
@@ -100,18 +70,15 @@ namespace TripleDES.User_Controls
                                        select message).FindAsync();
 
                 userInbox = usermessages;
-                ListBox temp = new ListBox();
 
                 //clear the lb and fill it with user messages
-                temp.Items.Clear();
+                lbInbox.Items.Clear();
 
                 foreach (ParseObject message in usermessages)
                 {   
                     // TODO: when encrypted need to decryipt here 
-                    temp.Items.Add(message.Get<string>("Subject"));
+                    lbInbox.Items.Add(message.Get<string>("Subject"));
                 }
-
-                SetText(temp);
             }
             catch(Exception exception){
                 MessageBox.Show(exception.Message.ToString().Trim());
