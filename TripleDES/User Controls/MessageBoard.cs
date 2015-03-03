@@ -15,11 +15,17 @@ namespace TripleDES.User_Controls
     public partial class MessageBoard : UserControl
     {
         IEnumerable<ParseObject> userInbox;
+        Timer t;
         public MessageBoard()
         {
             InitializeComponent();
             fillToBox();
-            fillInbox();
+
+            //makes a call to fillInbox every x seconds
+            t = new Timer { Enabled = true, Interval = 15 * 1000 }; // numSec *1000
+            t.Tick += delegate {
+                fillInbox();
+            };
           
         }
 
@@ -28,13 +34,17 @@ namespace TripleDES.User_Controls
             ParseUser.LogOut();
             Globals.currentUser = ParseUser.CurrentUser;
 
+            //disable the time that calls fillInbox
+            t.Enabled = false;
+
+            
             //set the panel back to log in
             Globals.panel.Controls.Clear();
             Globals.panel.Controls.Add(new User_Controls.SignIn());
         }
 
         /// <summary>
-        /// qureies all users  and fills the TO combo box
+        /// qureies all users and fills the TO combo box
         /// </summary>
         public async void fillToBox()
         {
@@ -71,6 +81,9 @@ namespace TripleDES.User_Controls
 
                 userInbox = usermessages;
 
+                //get the curently selected index to reset later 
+                int currentIndex = lbInbox.SelectedIndex;
+
                 //clear the lb and fill it with user messages
                 lbInbox.Items.Clear();
 
@@ -79,6 +92,9 @@ namespace TripleDES.User_Controls
                     // TODO: when encrypted need to decryipt here 
                     lbInbox.Items.Add(message.Get<string>("Subject"));
                 }
+
+                //reset the current index
+                lbInbox.SelectedIndex = currentIndex;
             }
             catch(Exception exception){
                 MessageBox.Show(exception.Message.ToString().Trim());
@@ -148,9 +164,5 @@ namespace TripleDES.User_Controls
                 //there was an exception 
             }
         }
-
-       
-
-       
     }
 }
