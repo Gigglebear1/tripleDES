@@ -1,0 +1,189 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Parse;
+
+
+namespace TripleDES.User_Controls
+{
+    public partial class MessageBoard : UserControl
+    {
+        IEnumerable<ParseObject> userInbox;
+        public MessageBoard()
+        {
+            InitializeComponent();
+            fillToBox();
+
+            var timer = new System.Threading.Timer(
+            e => fillInbox(),
+            null,
+            TimeSpan.Zero,
+            TimeSpan.FromMinutes(.25));
+        }
+
+        private void bttnLogOut_Click(object sender, EventArgs e)
+        {
+            ParseUser.LogOut();
+            Globals.currentUser = ParseUser.CurrentUser;
+
+            //set the panel back to log in
+            Globals.panel.Controls.Clear();
+            Globals.panel.Controls.Add(new User_Controls.SignIn());
+        }
+
+        /// <summary>
+        /// qureies all users  and fills the TO combo box
+        /// </summary>
+        public async void fillToBox()
+        {
+            //query all users
+            var allUsers = await(from User in ParseUser.Query
+                                 orderby User.Get<string>("username") descending
+                                select User).FindAsync();
+
+            //clear the cb and fill it with users minus the current user
+            cbTo.Items.Clear();
+            cbTo.Items.Add("Select User Name");
+            foreach (ParseUser user in allUsers)
+            {
+                if (user.Username != Globals.currentUser.Username)
+                {
+                    cbTo.Items.Add(user.Username);
+                }
+            }
+
+            //make it select the "Select User Name"
+            cbTo.SelectedIndex = 0;
+        }
+
+        delegate void SetTextCallback(ListBox text);
+
+        private void SetText(ListBox text)
+        {
+            // InvokeRequired required compares the thread ID of the
+            // calling thread to the thread ID of the creating thread.
+            // If these threads are different, it returns true.
+            if (this.lbInbox.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetText);
+                this.Invoke(d, new object[] { text });
+            }
+            else
+            {
+                this.lbInbox.Items.Clear();
+
+                for (int i = text.Items.Count - 1; i >= 0; i--)
+                {
+                    // do with listBox1.Items[i]
+
+                    lbInbox.Items.Add(text.Items[i]);
+                }
+                this.lbInbox = text;
+            }
+        }
+
+        /// <summary>
+        /// empty and then fill the inbox
+        /// </summary>
+        public async void fillInbox()
+        {
+            try
+            {
+                var usermessages = await (from message in ParseObject.GetQuery("Messages")
+                                       where message.Get<string>("ToID").Equals(Globals.currentUser.Username.ToString().Trim())
+                                       select message).FindAsync();
+
+                userInbox = usermessages;
+                ListBox temp = new ListBox();
+
+                //clear the lb and fill it with user messages
+                temp.Items.Clear();
+
+                foreach (ParseObject message in usermessages)
+                {   
+                    // TODO: when encrypted need to decryipt here 
+                    temp.Items.Add(message.Get<string>("Subject"));
+                }
+
+                SetText(temp);
+            }
+            catch(Exception exception){
+                MessageBox.Show(exception.Message.ToString().Trim());
+            }
+
+        
+        }
+
+        /// <summary>
+        /// send the message
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void bttnSend_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //gather all the information to compose the message
+                string subject = tbSubject.Text.ToString().Trim();
+                string body = tbBody.Text.ToString().Trim();
+                string to = cbTo.SelectedItem.ToString().Trim();
+                string from = Globals.currentUser.Username.ToString().Trim();
+
+                //send message to pasre
+                ParseObject message = new ParseObject("Messages");
+                message["FromID"] = from;
+                message["ToID"] = to;
+                message["Message"] = body;
+                message["Subject"] = subject;
+                await message.SaveAsync();
+
+                MessageBox.Show("Message sent sucessful");
+
+                //clear the message box and all other thing
+                cbTo.SelectedIndex = 0;
+                tbBody.Clear();
+                tbSubject.Clear();
+            }
+            catch(Exception exception){
+                MessageBox.Show(exception.Message.ToString().Trim());
+            }
+
+        }
+
+        /// <summary>
+        /// view the selected item in lbInbox 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void bttnView_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                //index from the lb
+                int seletedMessage = lbInbox.SelectedIndex;
+
+                //convert the userInbox to list then grab the index of the lb 
+                ParseObject message = userInbox.ToList()[seletedMessage];
+
+                string body = message.Get<string>("Message");
+
+                tbViewBody.Text = body;
+            }
+            catch (Exception excpetion)
+            {
+                //there was an exception 
+            }
+        }
+
+       
+
+       
+    }
+}

@@ -46,9 +46,10 @@
             this.bttnSignUp.Location = new System.Drawing.Point(432, 474);
             this.bttnSignUp.Name = "bttnSignUp";
             this.bttnSignUp.Size = new System.Drawing.Size(120, 40);
-            this.bttnSignUp.TabIndex = 0;
+            this.bttnSignUp.TabIndex = 5;
             this.bttnSignUp.Text = "Sign Up";
             this.bttnSignUp.UseVisualStyleBackColor = true;
+            this.bttnSignUp.Click += new System.EventHandler(this.bttnSignUp_Click);
             // 
             // tbUserName
             // 
@@ -107,28 +108,30 @@
             this.tbEmail.Location = new System.Drawing.Point(432, 205);
             this.tbEmail.Name = "tbEmail";
             this.tbEmail.Size = new System.Drawing.Size(284, 31);
-            this.tbEmail.TabIndex = 8;
+            this.tbEmail.TabIndex = 2;
             // 
             // tbPasswordRepeat
             // 
             this.tbPasswordRepeat.Location = new System.Drawing.Point(432, 379);
             this.tbPasswordRepeat.Name = "tbPasswordRepeat";
+            this.tbPasswordRepeat.PasswordChar = '*';
             this.tbPasswordRepeat.Size = new System.Drawing.Size(284, 31);
-            this.tbPasswordRepeat.TabIndex = 9;
+            this.tbPasswordRepeat.TabIndex = 4;
             // 
             // tbPassword
             // 
             this.tbPassword.Location = new System.Drawing.Point(432, 283);
             this.tbPassword.Name = "tbPassword";
+            this.tbPassword.PasswordChar = '*';
             this.tbPassword.Size = new System.Drawing.Size(284, 31);
-            this.tbPassword.TabIndex = 10;
+            this.tbPassword.TabIndex = 3;
             // 
             // bttnBack
             // 
             this.bttnBack.Location = new System.Drawing.Point(567, 474);
             this.bttnBack.Name = "bttnBack";
             this.bttnBack.Size = new System.Drawing.Size(115, 40);
-            this.bttnBack.TabIndex = 11;
+            this.bttnBack.TabIndex = 6;
             this.bttnBack.Text = "Back";
             this.bttnBack.UseVisualStyleBackColor = true;
             this.bttnBack.Click += new System.EventHandler(this.bttnBack_Click);

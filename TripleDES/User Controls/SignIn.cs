@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Parse;
 
 namespace TripleDES.User_Controls
 {
@@ -21,6 +22,25 @@ namespace TripleDES.User_Controls
         {
             Globals.panel.Controls.Clear();
             Globals.panel.Controls.Add(new User_Controls.SignUp());
+        }
+
+        private async void bttnSignIn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await ParseUser.LogInAsync(tbUserName.Text.ToString().Trim(), tbPassword.Text.ToString().Trim());
+                // Login was successful.
+                Globals.currentUser = ParseUser.CurrentUser;
+
+                Globals.panel.Controls.Clear();
+                Globals.panel.Controls.Add(new User_Controls.MessageBoard());
+
+            }
+            catch (Exception eception)
+            {
+                // The login failed. Check the error to see why.
+                MessageBox.Show(eception.Message.ToString());
+            }
         }
     }
 }

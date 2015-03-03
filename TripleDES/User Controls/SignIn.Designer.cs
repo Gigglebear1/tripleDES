@@ -30,6 +30,12 @@
         {
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.tbUserName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.bttnSignIn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -46,20 +52,79 @@
             this.button2.Location = new System.Drawing.Point(510, 562);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(158, 49);
-            this.button2.TabIndex = 1;
+            this.button2.TabIndex = 4;
             this.button2.Text = "Sign Up";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // tbPassword
+            // 
+            this.tbPassword.Location = new System.Drawing.Point(488, 351);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.PasswordChar = '*';
+            this.tbPassword.Size = new System.Drawing.Size(226, 31);
+            this.tbPassword.TabIndex = 2;
+            // 
+            // tbUserName
+            // 
+            this.tbUserName.Location = new System.Drawing.Point(488, 250);
+            this.tbUserName.Name = "tbUserName";
+            this.tbUserName.Size = new System.Drawing.Size(226, 31);
+            this.tbUserName.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(570, 51);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(78, 25);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Sign In";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(483, 323);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(106, 25);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Password";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(483, 222);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(113, 25);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "UserName";
+            // 
+            // bttnSignIn
+            // 
+            this.bttnSignIn.Location = new System.Drawing.Point(536, 398);
+            this.bttnSignIn.Name = "bttnSignIn";
+            this.bttnSignIn.Size = new System.Drawing.Size(112, 43);
+            this.bttnSignIn.TabIndex = 3;
+            this.bttnSignIn.Text = "Sign In";
+            this.bttnSignIn.UseVisualStyleBackColor = true;
+            this.bttnSignIn.Click += new System.EventHandler(this.bttnSignIn_Click);
             // 
             // SignIn
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.bttnSignIn);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.tbUserName);
+            this.Controls.Add(this.tbPassword);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "SignIn";
             this.Size = new System.Drawing.Size(1237, 671);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -67,5 +132,11 @@
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox tbPassword;
+        private System.Windows.Forms.TextBox tbUserName;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button bttnSignIn;
     }
 }
