@@ -110,6 +110,7 @@ namespace TripleDES.User_Controls
         /// <param name="e"></param>
         private async void bttnSend_Click(object sender, EventArgs e)
         {
+            
             try
             {
                 //gather all the information to compose the message
@@ -118,20 +119,27 @@ namespace TripleDES.User_Controls
                 string to = cbTo.SelectedItem.ToString().Trim();
                 string from = Globals.currentUser.Username.ToString().Trim();
 
-                //send message to pasre
-                ParseObject message = new ParseObject("Messages");
-                message["FromID"] = from;
-                message["ToID"] = to;
-                message["Message"] = body;
-                message["Subject"] = subject;
-                await message.SaveAsync();
+                if (subject == "" || body == "" || to == "Select User Name")
+                {
+                    MessageBox.Show("Please enter all data");
+                }
+                else
+                {
+                    //send message to pasre
+                    ParseObject message = new ParseObject("Messages");
+                    message["FromID"] = from;
+                    message["ToID"] = to;
+                    message["Message"] = body;
+                    message["Subject"] = subject;
+                    await message.SaveAsync();
 
-                MessageBox.Show("Message sent sucessful");
+                    MessageBox.Show("Message sent sucessful");
 
-                //clear the message box and all other thing
-                cbTo.SelectedIndex = 0;
-                tbBody.Clear();
-                tbSubject.Clear();
+                    //clear the message box and all other thing
+                    cbTo.SelectedIndex = 0;
+                    tbBody.Clear();
+                    tbSubject.Clear();
+                }
             }
             catch(Exception exception){
                 MessageBox.Show(exception.Message.ToString().Trim());
@@ -163,6 +171,11 @@ namespace TripleDES.User_Controls
             {
                 //there was an exception 
             }
+        }
+
+        private void bttnDelete_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -144,6 +144,7 @@
             this.bttnDelete.TabIndex = 10;
             this.bttnDelete.Text = "Delete Message";
             this.bttnDelete.UseVisualStyleBackColor = true;
+            this.bttnDelete.Click += new System.EventHandler(this.bttnDelete_Click);
             // 
             // tbViewBody
             // 
