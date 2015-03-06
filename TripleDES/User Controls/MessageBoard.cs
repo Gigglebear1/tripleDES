@@ -20,6 +20,7 @@ namespace TripleDES.User_Controls
         {
             InitializeComponent();
             fillToBox();
+            fillInbox();
 
             //makes a call to fillInbox every x seconds
             t = new Timer { Enabled = true, Interval = 15 * 1000 }; // numSec *1000
@@ -175,7 +176,9 @@ namespace TripleDES.User_Controls
 
         private async void bttnDelete_Click(object sender, EventArgs e)
         {
+            int messageIndex = lbInbox.SelectedIndex;
             
+
         }
     }
 }
