@@ -173,9 +173,9 @@ namespace TripleDES.User_Controls
             }
         }
 
-        private void bttnDelete_Click(object sender, EventArgs e)
+        private async void bttnDelete_Click(object sender, EventArgs e)
         {
-
+            
         }
     }
 }
