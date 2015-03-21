@@ -7,6 +7,9 @@ using System.Windows.Forms;
 
 namespace SHA1
 {
+    /// <summary>
+    /// takes in any length string of bits and produces a hash of that binary string
+    /// </summary>
     class SHA1
     {
         //variables
@@ -21,17 +24,17 @@ namespace SHA1
 
             foreach (int item in i)
             {
-                long num = (long)(Math.Pow(2, 30) * Math.Pow(item,0.5));
+                long num = (long)(Math.Pow(2, 30) * Math.Pow(item, 0.5));
                 string hex = Convert.ToString(num, 16);
 
-                keys[index++] = Convert.ToString(Convert.ToInt64(hex, 16), 2).PadLeft(32,'0');
+                keys[index++] = Convert.ToString(Convert.ToInt64(hex, 16), 2).PadLeft(32, '0');
 
             }
         }
 
         private static string keyRound(int round)
         {
-            
+
             if (round >= 0 && round <= 19)
             {
                 return keys[0];
@@ -64,17 +67,19 @@ namespace SHA1
             {
                 result = OR(AND(B, C), AND(NOT(B), D));
             }
-            else if(round >= 20 && round <= 39){
+            else if (round >= 20 && round <= 39)
+            {
                 result = XOR(XOR(B, C), D);
             }
             else if (round >= 40 && round <= 59)
             {
                 string BandC = AND(B, C);
                 string BandD = AND(B, D);
-                string CandD = AND(C,D);
+                string CandD = AND(C, D);
                 result = OR(OR(BandC, BandD), CandD);
             }
-            else{
+            else
+            {
                 result = XOR(XOR(B, C), D);
             }
 
@@ -85,8 +90,8 @@ namespace SHA1
 
         private static void preProcess(string toProcess)
         {
-    
-             //empty W
+
+            //empty W
             for (int i = 0; i < 80; ++i)
             {
                 W[i] = "";
@@ -102,11 +107,11 @@ namespace SHA1
             {
                 string half1 = XOR(W[i - 16], W[i - 14]);
                 string half2 = XOR(W[i - 8], W[i - 3]);
-                W[i] = leftShift(XOR(half1 , half2), 1);     
+                W[i] = leftShift(XOR(half1, half2), 1);
             }
-        } 
+        }
 
-        public static string hashString(string input )
+        public static string hashString(string input)
         {
             setKeys();
 
@@ -114,8 +119,8 @@ namespace SHA1
             string messageBit = "";
             foreach (char ch in input)
             {
-                string charBitStr =  Convert.ToString((int)ch, 2);
-               
+                string charBitStr = Convert.ToString((int)ch, 2);
+
                 //make sure that it is a byte that comes out
                 while (charBitStr.Length < 8)
                 {
@@ -136,7 +141,7 @@ namespace SHA1
             messageBit = messageBit.PadRight(messageBit.Length + toPad, '0');
 
             //add 64bits of message lenght
-            string size64 = Convert.ToString(originalBitLength,2);
+            string size64 = Convert.ToString(originalBitLength, 2);
 
             toPad = size64.Length % 64;
             toPad = 64 - toPad;
@@ -151,11 +156,11 @@ namespace SHA1
             string D = "00010000001100100101010001110110";
             string E = "11000011110100101110000111110000";
 
-            string A2 = "01100111010001010010001100000001";
-            string B2 = "11101111110011011010101110001001";
-            string C2 = "10011000101110101101110011111110";
-            string D2 = "00010000001100100101010001110110";
-            string E2 = "11000011110100101110000111110000";
+            string A2 = "";
+            string B2 = "";
+            string C2 = "";
+            string D2 = "";
+            string E2 = "";
 
             string tempA = "";
             string tempB = "";
@@ -166,39 +171,46 @@ namespace SHA1
 
             for (int i = 0; i < messageBit.Length / 512; ++i)
             {
-                
+
                 //preprocess make the W
                 preProcess(messageBit.Substring(i * 512, 512));
 
+                A2 = A;
+                B2 = B;
+                C2 = C;
+                D2 = D;
+                E2 = E;
 
                 //the 80 rounds
                 for (int j = 0; j < 80; ++j)
-                { 
-                    tempA = ADD(E, leftShift(A, 5) , W[j], keyRound(j) , function(j, B, C, D));
+                {
+                    tempA = ADD(E, leftShift(A, 5), W[j], keyRound(j), function(j, B, C, D));
                     tempB = A;
                     tempC = leftShift(B, 30);
                     tempD = C;
                     tempE = D;
 
-                    A = tempA.Substring(tempA.Length-32,32);
+                    A = tempA.Substring(tempA.Length - 32, 32);
                     B = tempB;
                     C = tempC;
                     D = tempD;
                     E = tempE;
                 }
-            }
-            A = ADD(A, A2);
-            B = ADD(B, B2);
-            C = ADD(C, C2);
-            D = ADD(D, D2);
-            E = ADD(E, E2);
 
-            string finalBinary = A + B + C + D + E; 
+                A = ADD(A, A2);
+                B = ADD(B, B2);
+                C = ADD(C, C2);
+                D = ADD(D, D2);
+                E = ADD(E, E2);
+            }
+
+
+            string finalBinary = A + B + C + D + E;
 
             string finalHex = "";
             for (int j = 0; j < 40; ++j)
             {
-                finalHex += Convert.ToInt64(finalBinary.Substring(j*4,4), 2).ToString("X");
+                finalHex += Convert.ToInt64(finalBinary.Substring(j * 4, 4), 2).ToString("X");
             }
 
             return finalHex;
@@ -209,8 +221,8 @@ namespace SHA1
 
         private static string ADD(string A, string B, string C, string D, string E)
         {
-            long intA = Convert.ToInt64(A,2);
-            long intB = Convert.ToInt64(B,2);
+            long intA = Convert.ToInt64(A, 2);
+            long intB = Convert.ToInt64(B, 2);
             long intC = Convert.ToInt64(C, 2);
             long intD = Convert.ToInt64(D, 2);
             long intE = Convert.ToInt64(E, 2);
@@ -331,9 +343,9 @@ namespace SHA1
         private static string leftShift(string input, int amount)
         {
 
-            return input.Substring(amount, input.Length -amount) + input.Substring(0, amount);
+            return input.Substring(amount, input.Length - amount) + input.Substring(0, amount);
         }
-        
+
         #endregion
     }
 }
