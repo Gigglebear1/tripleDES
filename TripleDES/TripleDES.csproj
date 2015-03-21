@@ -59,13 +59,13 @@
     <Compile Include="Globals.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Support\SHA1.cs" />
     <Compile Include="User Controls\MessageBoard.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="User Controls\MessageBoard.Designer.cs">
       <DependentUpon>MessageBoard.cs</DependentUpon>
     </Compile>
-    <Compile Include="User Controls\SetTextCallback.cs" />
     <Compile Include="User Controls\SignIn.cs">
       <SubType>UserControl</SubType>
     </Compile>

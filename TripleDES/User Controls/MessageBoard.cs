@@ -21,6 +21,7 @@ namespace TripleDES.User_Controls
             InitializeComponent();
             fillToBox();
             fillInbox();
+            lbWarning.Text = "";
 
             //makes a call to fillInbox every x seconds
             t = new Timer { Enabled = true, Interval = 15 * 1000 }; // numSec *1000
@@ -91,7 +92,7 @@ namespace TripleDES.User_Controls
                 foreach (ParseObject message in usermessages)
                 {   
                     // TODO: when encrypted need to decryipt here 
-                    lbInbox.Items.Add(message.Get<string>("Subject"));
+                    lbInbox.Items.Add("From:"+ message.Get<string>("FromID")+"  Subject:"+ message.Get<string>("Subject"));
                 }
 
                 //reset the current index
@@ -132,6 +133,7 @@ namespace TripleDES.User_Controls
                     message["ToID"] = to;
                     message["Message"] = body;
                     message["Subject"] = subject;
+                    message["SHA1"] = SHA1.SHA1.hashString(subject + body + tbSharedKeySend.Text);
                     await message.SaveAsync();
 
                     MessageBox.Show("Message sent sucessful");
@@ -140,6 +142,7 @@ namespace TripleDES.User_Controls
                     cbTo.SelectedIndex = 0;
                     tbBody.Clear();
                     tbSubject.Clear();
+                    tbSharedKeySend.Clear();
                 }
             }
             catch(Exception exception){
@@ -158,15 +161,30 @@ namespace TripleDES.User_Controls
 
             try
             {
+                //clear warning label
+                lbWarning.Text = "";
+
                 //index from the lb
                 int seletedMessage = lbInbox.SelectedIndex;
+
+                //for waring at top of message if needed
+                string warning = "!!!!!WARNING! message might have been tampered with!!!!!";
 
                 //convert the userInbox to list then grab the index of the lb 
                 ParseObject message = userInbox.ToList()[seletedMessage];
 
                 string body = message.Get<string>("Message");
 
-                tbViewBody.Text = body;
+                //recompute the SHA
+                string computedSHA = SHA1.SHA1.hashString(message.Get<string>("Subject") + message.Get<string>("Message") + tbSharedKeyReceive.Text);
+
+                if (computedSHA != message.Get<string>("SHA1"))
+                {
+                    MessageBox.Show("WARNING!!!!\nThis message has been tampered with or you entered an incorrect Shared Key");
+                    lbWarning.Text = warning;
+                }
+                
+               tbViewBody.Text = body;
             }
             catch (Exception excpetion)
             {
@@ -176,7 +194,29 @@ namespace TripleDES.User_Controls
 
         private async void bttnDelete_Click(object sender, EventArgs e)
         {
-            int messageIndex = lbInbox.SelectedIndex;
+           try{
+            if (lbInbox.SelectedIndex != -1)
+            {
+                //get the object to delete
+                int messageIndex = lbInbox.SelectedIndex;
+                ParseObject messageToDelete = userInbox.ToList()[messageIndex];
+
+                //delete object
+                await messageToDelete.DeleteAsync();
+
+                //TODO: error wen delete but it deletes something to do with viewing it and trying to delete it   
+
+                //update fill box
+                fillInbox();
+            }
+            else
+            {
+                MessageBox.Show("Please Select A Message To Delete");
+            }
+           }
+            catch(Exception exception){
+
+            }
             
 
         }
