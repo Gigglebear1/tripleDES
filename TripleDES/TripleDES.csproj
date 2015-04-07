@@ -60,6 +60,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\SHA1.cs" />
+    <Compile Include="Support\TripleDesAlgo.cs" />
     <Compile Include="User Controls\MessageBoard.cs">
       <SubType>UserControl</SubType>
     </Compile>

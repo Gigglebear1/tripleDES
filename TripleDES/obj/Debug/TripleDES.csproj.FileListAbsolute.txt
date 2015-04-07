@@ -13,3 +13,19 @@ c:\users\blake burton\documents\visual studio 2013\Projects\TripleDES\TripleDES\
 c:\users\blake burton\documents\visual studio 2013\Projects\TripleDES\TripleDES\obj\Debug\TripleDES.pdb
 C:\Users\Blake Burton\documents\visual studio 2013\Projects\TripleDES\TripleDES\obj\Debug\TripleDES.User_Controls.SignIn.resources
 C:\Users\Blake Burton\documents\visual studio 2013\Projects\TripleDES\TripleDES\obj\Debug\TripleDES.User_Controls.SignUp.resources
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\bin\Debug\TripleDES.exe.config
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\bin\Debug\TripleDES.exe
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\bin\Debug\TripleDES.pdb
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\bin\Debug\Parse.dll
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\bin\Debug\Parse.NetFx45.dll
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\bin\Debug\Parse.xml
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\bin\Debug\Parse.NetFx45.xml
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.csprojResolveAssemblyReference.cache
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.Form1.resources
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.Properties.Resources.resources
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.User_Controls.MessageBoard.resources
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.User_Controls.SignIn.resources
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.User_Controls.SignUp.resources
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.csproj.GenerateResource.Cache
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.exe
+C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.pdb

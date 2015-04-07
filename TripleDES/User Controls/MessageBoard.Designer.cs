@@ -30,6 +30,8 @@
         {
             this.bttnLogOut = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tbSharedKeySend = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.bttnSend = new System.Windows.Forms.Button();
             this.tbBody = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -37,16 +39,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbTo = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lbWarning = new System.Windows.Forms.Label();
+            this.tbSharedKeyReceive = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.bttnDelete = new System.Windows.Forms.Button();
             this.tbViewBody = new System.Windows.Forms.TextBox();
             this.bttnView = new System.Windows.Forms.Button();
             this.lbInbox = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tbSharedKeySend = new System.Windows.Forms.TextBox();
-            this.tbSharedKeyReceive = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lbWarning = new System.Windows.Forms.Label();
+            this.bttnAttachFile = new System.Windows.Forms.Button();
+            this.tbFilePath = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -54,7 +56,7 @@
             // bttnLogOut
             // 
             this.bttnLogOut.Location = new System.Drawing.Point(290, 10);
-            this.bttnLogOut.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.bttnLogOut.Margin = new System.Windows.Forms.Padding(2);
             this.bttnLogOut.Name = "bttnLogOut";
             this.bttnLogOut.Size = new System.Drawing.Size(61, 29);
             this.bttnLogOut.TabIndex = 3;
@@ -64,6 +66,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.tbFilePath);
+            this.groupBox1.Controls.Add(this.bttnAttachFile);
             this.groupBox1.Controls.Add(this.tbSharedKeySend);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.bttnSend);
@@ -73,18 +77,34 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cbTo);
             this.groupBox1.Location = new System.Drawing.Point(2, 2);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(331, 426);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Send";
             // 
+            // tbSharedKeySend
+            // 
+            this.tbSharedKeySend.Location = new System.Drawing.Point(89, 82);
+            this.tbSharedKeySend.Name = "tbSharedKeySend";
+            this.tbSharedKeySend.Size = new System.Drawing.Size(135, 20);
+            this.tbSharedKeySend.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(5, 82);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(62, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Shared Key";
+            // 
             // bttnSend
             // 
-            this.bttnSend.Location = new System.Drawing.Point(12, 312);
-            this.bttnSend.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.bttnSend.Location = new System.Drawing.Point(8, 363);
+            this.bttnSend.Margin = new System.Windows.Forms.Padding(2);
             this.bttnSend.Name = "bttnSend";
             this.bttnSend.Size = new System.Drawing.Size(56, 21);
             this.bttnSend.TabIndex = 5;
@@ -95,7 +115,7 @@
             // tbBody
             // 
             this.tbBody.Location = new System.Drawing.Point(12, 131);
-            this.tbBody.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbBody.Margin = new System.Windows.Forms.Padding(2);
             this.tbBody.Multiline = true;
             this.tbBody.Name = "tbBody";
             this.tbBody.Size = new System.Drawing.Size(255, 177);
@@ -114,7 +134,7 @@
             // tbSubject
             // 
             this.tbSubject.Location = new System.Drawing.Point(89, 53);
-            this.tbSubject.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbSubject.Margin = new System.Windows.Forms.Padding(2);
             this.tbSubject.Name = "tbSubject";
             this.tbSubject.Size = new System.Drawing.Size(135, 20);
             this.tbSubject.TabIndex = 2;
@@ -133,7 +153,7 @@
             // 
             this.cbTo.FormattingEnabled = true;
             this.cbTo.Location = new System.Drawing.Point(89, 23);
-            this.cbTo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbTo.Margin = new System.Windows.Forms.Padding(2);
             this.cbTo.Name = "cbTo";
             this.cbTo.Size = new System.Drawing.Size(135, 21);
             this.cbTo.TabIndex = 0;
@@ -150,80 +170,22 @@
             this.groupBox2.Controls.Add(this.lbInbox);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Location = new System.Drawing.Point(337, 2);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(355, 426);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Receive";
             // 
-            // bttnDelete
+            // lbWarning
             // 
-            this.bttnDelete.Location = new System.Drawing.Point(45, 363);
-            this.bttnDelete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.bttnDelete.Name = "bttnDelete";
-            this.bttnDelete.Size = new System.Drawing.Size(92, 19);
-            this.bttnDelete.TabIndex = 10;
-            this.bttnDelete.Text = "Delete Message";
-            this.bttnDelete.UseVisualStyleBackColor = true;
-            this.bttnDelete.Click += new System.EventHandler(this.bttnDelete_Click);
-            // 
-            // tbViewBody
-            // 
-            this.tbViewBody.Location = new System.Drawing.Point(22, 192);
-            this.tbViewBody.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tbViewBody.Multiline = true;
-            this.tbViewBody.Name = "tbViewBody";
-            this.tbViewBody.ReadOnly = true;
-            this.tbViewBody.Size = new System.Drawing.Size(294, 165);
-            this.tbViewBody.TabIndex = 9;
-            // 
-            // bttnView
-            // 
-            this.bttnView.Location = new System.Drawing.Point(222, 131);
-            this.bttnView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.bttnView.Name = "bttnView";
-            this.bttnView.Size = new System.Drawing.Size(64, 20);
-            this.bttnView.TabIndex = 8;
-            this.bttnView.Text = "View";
-            this.bttnView.UseVisualStyleBackColor = true;
-            this.bttnView.Click += new System.EventHandler(this.bttnView_Click);
-            // 
-            // lbInbox
-            // 
-            this.lbInbox.FormattingEnabled = true;
-            this.lbInbox.Location = new System.Drawing.Point(22, 33);
-            this.lbInbox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.lbInbox.Name = "lbInbox";
-            this.lbInbox.Size = new System.Drawing.Size(264, 69);
-            this.lbInbox.TabIndex = 7;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 20);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(33, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Inbox";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 82);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(62, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Shared Key";
-            // 
-            // tbSharedKeySend
-            // 
-            this.tbSharedKeySend.Location = new System.Drawing.Point(89, 82);
-            this.tbSharedKeySend.Name = "tbSharedKeySend";
-            this.tbSharedKeySend.Size = new System.Drawing.Size(135, 20);
-            this.tbSharedKeySend.TabIndex = 7;
+            this.lbWarning.AutoSize = true;
+            this.lbWarning.Location = new System.Drawing.Point(19, 177);
+            this.lbWarning.Name = "lbWarning";
+            this.lbWarning.Size = new System.Drawing.Size(69, 13);
+            this.lbWarning.TabIndex = 11;
+            this.lbWarning.Text = "label warning";
             // 
             // tbSharedKeyReceive
             // 
@@ -241,14 +203,73 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Shared Key";
             // 
-            // lbWarning
+            // bttnDelete
             // 
-            this.lbWarning.AutoSize = true;
-            this.lbWarning.Location = new System.Drawing.Point(19, 177);
-            this.lbWarning.Name = "lbWarning";
-            this.lbWarning.Size = new System.Drawing.Size(69, 13);
-            this.lbWarning.TabIndex = 11;
-            this.lbWarning.Text = "label warning";
+            this.bttnDelete.Location = new System.Drawing.Point(45, 363);
+            this.bttnDelete.Margin = new System.Windows.Forms.Padding(2);
+            this.bttnDelete.Name = "bttnDelete";
+            this.bttnDelete.Size = new System.Drawing.Size(92, 19);
+            this.bttnDelete.TabIndex = 10;
+            this.bttnDelete.Text = "Delete Message";
+            this.bttnDelete.UseVisualStyleBackColor = true;
+            this.bttnDelete.Click += new System.EventHandler(this.bttnDelete_Click);
+            // 
+            // tbViewBody
+            // 
+            this.tbViewBody.Location = new System.Drawing.Point(22, 192);
+            this.tbViewBody.Margin = new System.Windows.Forms.Padding(2);
+            this.tbViewBody.Multiline = true;
+            this.tbViewBody.Name = "tbViewBody";
+            this.tbViewBody.ReadOnly = true;
+            this.tbViewBody.Size = new System.Drawing.Size(294, 165);
+            this.tbViewBody.TabIndex = 9;
+            // 
+            // bttnView
+            // 
+            this.bttnView.Location = new System.Drawing.Point(222, 131);
+            this.bttnView.Margin = new System.Windows.Forms.Padding(2);
+            this.bttnView.Name = "bttnView";
+            this.bttnView.Size = new System.Drawing.Size(64, 20);
+            this.bttnView.TabIndex = 8;
+            this.bttnView.Text = "View";
+            this.bttnView.UseVisualStyleBackColor = true;
+            this.bttnView.Click += new System.EventHandler(this.bttnView_Click);
+            // 
+            // lbInbox
+            // 
+            this.lbInbox.FormattingEnabled = true;
+            this.lbInbox.Location = new System.Drawing.Point(22, 33);
+            this.lbInbox.Margin = new System.Windows.Forms.Padding(2);
+            this.lbInbox.Name = "lbInbox";
+            this.lbInbox.Size = new System.Drawing.Size(264, 69);
+            this.lbInbox.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(19, 20);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(33, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Inbox";
+            // 
+            // bttnAttachFile
+            // 
+            this.bttnAttachFile.Location = new System.Drawing.Point(13, 313);
+            this.bttnAttachFile.Name = "bttnAttachFile";
+            this.bttnAttachFile.Size = new System.Drawing.Size(75, 23);
+            this.bttnAttachFile.TabIndex = 8;
+            this.bttnAttachFile.Text = "Attach File";
+            this.bttnAttachFile.UseVisualStyleBackColor = true;
+            this.bttnAttachFile.Click += new System.EventHandler(this.bttnAttachFile_Click);
+            // 
+            // tbFilePath
+            // 
+            this.tbFilePath.Location = new System.Drawing.Point(94, 316);
+            this.tbFilePath.Name = "tbFilePath";
+            this.tbFilePath.Size = new System.Drawing.Size(173, 20);
+            this.tbFilePath.TabIndex = 9;
             // 
             // MessageBoard
             // 
@@ -256,7 +277,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MessageBoard";
             this.Size = new System.Drawing.Size(692, 430);
             this.groupBox1.ResumeLayout(false);
@@ -288,5 +309,7 @@
         private System.Windows.Forms.TextBox tbSharedKeyReceive;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lbWarning;
+        private System.Windows.Forms.TextBox tbFilePath;
+        private System.Windows.Forms.Button bttnAttachFile;
     }
 }

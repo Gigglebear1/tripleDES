@@ -25,10 +25,11 @@ namespace TripleDES.User_Controls
 
             //makes a call to fillInbox every x seconds
             t = new Timer { Enabled = true, Interval = 15 * 1000 }; // numSec *1000
-            t.Tick += delegate {
+            t.Tick += delegate
+            {
                 fillInbox();
             };
-          
+
         }
 
         private void bttnLogOut_Click(object sender, EventArgs e)
@@ -39,7 +40,7 @@ namespace TripleDES.User_Controls
             //disable the time that calls fillInbox
             t.Enabled = false;
 
-            
+
             //set the panel back to log in
             Globals.panel.Controls.Clear();
             Globals.panel.Controls.Add(new User_Controls.SignIn());
@@ -51,9 +52,9 @@ namespace TripleDES.User_Controls
         public async void fillToBox()
         {
             //query all users
-            var allUsers = await(from User in ParseUser.Query
-                                 orderby User.Get<string>("username") descending
-                                select User).FindAsync();
+            var allUsers = await (from User in ParseUser.Query
+                                  orderby User.Get<string>("username") descending
+                                  select User).FindAsync();
 
             //clear the cb and fill it with users minus the current user
             cbTo.Items.Clear();
@@ -78,8 +79,8 @@ namespace TripleDES.User_Controls
             try
             {
                 var usermessages = await (from message in ParseObject.GetQuery("Messages")
-                                       where message.Get<string>("ToID").Equals(Globals.currentUser.Username.ToString().Trim())
-                                       select message).FindAsync();
+                                          where message.Get<string>("ToID").Equals(Globals.currentUser.Username.ToString().Trim())
+                                          select message).FindAsync();
 
                 userInbox = usermessages;
 
@@ -90,19 +91,20 @@ namespace TripleDES.User_Controls
                 lbInbox.Items.Clear();
 
                 foreach (ParseObject message in usermessages)
-                {   
+                {
                     // TODO: when encrypted need to decryipt here 
-                    lbInbox.Items.Add("From:"+ message.Get<string>("FromID")+"  Subject:"+ message.Get<string>("Subject"));
+                    lbInbox.Items.Add("From:" + message.Get<string>("FromID") + "  Subject:" + message.Get<string>("Subject"));
                 }
 
                 //reset the current index
                 lbInbox.SelectedIndex = currentIndex;
             }
-            catch(Exception exception){
+            catch (Exception exception)
+            {
                 MessageBox.Show(exception.Message.ToString().Trim());
             }
 
-        
+
         }
 
         /// <summary>
@@ -112,7 +114,7 @@ namespace TripleDES.User_Controls
         /// <param name="e"></param>
         private async void bttnSend_Click(object sender, EventArgs e)
         {
-            
+
             try
             {
                 //gather all the information to compose the message
@@ -131,9 +133,13 @@ namespace TripleDES.User_Controls
                     ParseObject message = new ParseObject("Messages");
                     message["FromID"] = from;
                     message["ToID"] = to;
-                    message["Message"] = body;
+                    message["Message"] = Support.TripleDesAlgo.tdesEncrypt(body, "0011101100111000100110000011011100010101001000001111011101011110", "1001001000101111101101010001000011000111000111110100001101101110");
                     message["Subject"] = subject;
                     message["SHA1"] = SHA1.SHA1.hashString(subject + body + tbSharedKeySend.Text);
+                    if (tbFilePath.Text != "")
+                    {
+
+                    }
                     await message.SaveAsync();
 
                     MessageBox.Show("Message sent sucessful");
@@ -145,7 +151,8 @@ namespace TripleDES.User_Controls
                     tbSharedKeySend.Clear();
                 }
             }
-            catch(Exception exception){
+            catch (Exception exception)
+            {
                 MessageBox.Show(exception.Message.ToString().Trim());
             }
 
@@ -173,7 +180,7 @@ namespace TripleDES.User_Controls
                 //convert the userInbox to list then grab the index of the lb 
                 ParseObject message = userInbox.ToList()[seletedMessage];
 
-                string body = message.Get<string>("Message");
+                string body = Support.TripleDesAlgo.tdesDecrypt(message.Get<string>("Message"), "0011101100111000100110000011011100010101001000001111011101011110", "1001001000101111101101010001000011000111000111110100001101101110"); 
 
                 //recompute the SHA
                 string computedSHA = SHA1.SHA1.hashString(message.Get<string>("Subject") + message.Get<string>("Message") + tbSharedKeyReceive.Text);
@@ -183,8 +190,8 @@ namespace TripleDES.User_Controls
                     MessageBox.Show("WARNING!!!!\nThis message has been tampered with or you entered an incorrect Shared Key");
                     lbWarning.Text = warning;
                 }
-                
-               tbViewBody.Text = body;
+
+                tbViewBody.Text = body;
             }
             catch (Exception excpetion)
             {
@@ -194,30 +201,49 @@ namespace TripleDES.User_Controls
 
         private async void bttnDelete_Click(object sender, EventArgs e)
         {
-           try{
-            if (lbInbox.SelectedIndex != -1)
+            try
             {
-                //get the object to delete
-                int messageIndex = lbInbox.SelectedIndex;
-                ParseObject messageToDelete = userInbox.ToList()[messageIndex];
+                if (lbInbox.SelectedIndex != -1)
+                {
+                    //get the object to delete
+                    int messageIndex = lbInbox.SelectedIndex;
+                    ParseObject messageToDelete = userInbox.ToList()[messageIndex];
 
-                //delete object
-                await messageToDelete.DeleteAsync();
+                    //delete object
+                    await messageToDelete.DeleteAsync();
 
-                //TODO: error wen delete but it deletes something to do with viewing it and trying to delete it   
+                    //TODO: error wen delete but it deletes something to do with viewing it and trying to delete it   
 
-                //update fill box
-                fillInbox();
+                    //update fill box
+                    fillInbox();
+                }
+                else
+                {
+                    MessageBox.Show("Please Select A Message To Delete");
+                }
             }
-            else
+            catch (Exception exception)
             {
-                MessageBox.Show("Please Select A Message To Delete");
+
             }
-           }
+
+
+        }
+
+        private void bttnAttachFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var FD = new System.Windows.Forms.OpenFileDialog();
+                FD.Filter = "Text Files (.txt)|*.txt";
+                if (FD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    tbFilePath.Text = FD.FileName;
+                }
+            }
             catch(Exception exception){
 
             }
-            
 
         }
     }
