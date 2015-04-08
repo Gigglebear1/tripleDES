@@ -79,12 +79,10 @@ namespace TripleDES.Support
                 }
                 return outs = j;
             }
-
         }
         //does initial perm of message
         private static string initialPerm(string ins)
         {
-
             int[] xArray = { 57, 59, 61, 63, 56, 58, 60, 62 };
             string outs = null;
 
@@ -96,8 +94,7 @@ namespace TripleDES.Support
                     outs += ins.Substring(x, 1);
                     x = x - 8;
                 }
-            }
-            
+            }            
             return outs;
         }
         //final permutation
@@ -142,19 +139,16 @@ namespace TripleDES.Support
                 outs += ins.Substring(x, 6);
                 x += 4;
             }
-
             outs += ins.Substring(27, 5);
             outs += ins.Substring(0, 1);
 
             //return expansion string
             return outs;
-
         }
         //XOR function
         private static string xorFunction(string ins, string key)
         {
             string outs = null;
-            //string chunk = null;
             //comapres 2 values for xor operation
             for (int i = 0; i < key.Length; i++)
             {
@@ -163,7 +157,6 @@ namespace TripleDES.Support
                 if (a == b)
                 {
                     outs += ("0");
-                    //out.append("0");
                 }
                 else
                 {
@@ -181,8 +174,7 @@ namespace TripleDES.Support
             foreach (int x in perm)
             {
                 outs += ins.Substring(x, 1);
-            }
-            
+            }            
             return outs;
         }
         //takes right and key, send to expansionFunction, xor function,
@@ -204,8 +196,7 @@ namespace TripleDES.Support
                 chunk += ins.Substring(x, 6);
                 x += 6;
                 xorArray[i] = chunk;
-                chunk = null;
-                
+                chunk = null;                
             }
             //loops chunks and gets values from sBox lookup
             for (int i = 0; i < 8; i++)
@@ -269,8 +260,7 @@ namespace TripleDES.Support
         private static string keyFinalPerm(string key)
         {
             string outs = null;
-            //cout << key.size() << endl;
-            //out.clear();
+            
             int[] perm = new int[48] { 13, 16, 10, 23, 0, 4, 2, 27, 14, 5, 20, 9, 22, 18, 11, 3, 25, 7, 15
 		    , 6, 26, 19, 12, 1, 40, 51, 30, 36, 46, 54, 29, 39, 50, 44, 32, 47,
 		    43, 48, 38, 55, 33, 52, 45, 41, 49, 35, 28, 31 };
@@ -279,7 +269,6 @@ namespace TripleDES.Support
             {
                 int num = perm[i];
                 outs += key.Substring(num, 1);
-                //out.append(key, num, 1);
             }
             return outs;
 
@@ -288,7 +277,6 @@ namespace TripleDES.Support
         private static string keyInitialPerm(string key)
         {
             string outs = key;
-            //cout << in << "\n";
             int x = 0;
             //split key 2 parts
             string c = null;
@@ -304,30 +292,25 @@ namespace TripleDES.Support
             {
                 if (i < 8)
                 {
-                    //c.append(out, y, 1);
                     c += outs.Substring(y, 1);
                     y -= 8;
                 }
                 if (i >= 8 && i < 16)
                 {
-                    //c.append(out, z, 1);
                     c += outs.Substring(z, 1);
                     z -= 8;
                 }
                 if (i >= 16 && i < 24)
                 {
-                    //c.append(out, a, 1);
                     c += outs.Substring(a, 1);
                     a -= 8;
                 }
                 if (i >= 24)
                 {
-                    //c.append(out, b, 1);
                     c += outs.Substring(b, 1);
                     b -= 8;
                 }
             }
-            //cout << c.size();
             //Same as above just with d
             y = 62;
             z = 61;
@@ -337,41 +320,31 @@ namespace TripleDES.Support
             {
                 if (i < 8)
                 {
-                    //d.append(out, y, 1);
                     d += outs.Substring(y, 1);
                     y -= 8;
                 }
                 if (i >= 8 && i < 16)
                 {
-                    //d.append(out, z, 1);
                     d += outs.Substring(z, 1);
                     z -= 8;
                 }
                 if (i >= 16 && i < 24)
                 {
-                    //d.append(out, a, 1);
                     d += outs.Substring(a, 1);
                     a -= 8;
                 }
                 if (i >= 24)
                 {
-                    //d.append(out, b, 1);
                     d += outs.Substring(b, 1);
                     b -= 8;
                 }
-            }
-            /*outs.clear();
-            out = c + d;
-            c.clear();
-            d.clear();*/
+            }            
             outs = null;
             outs = c + d;
             c = null;
             d = null;
             return outs;
         }
-
-
         //performs shifts and key perms for 16 rounds
         private static string[] keyRounds(string key_in, string[] arr)
         {
@@ -426,12 +399,9 @@ namespace TripleDES.Support
             string right = null;
             string left = null;
             string function = null;
-            /*left.append(message, 0, 32);
-            right.append(message, 32, 63);*/
+           
             left += message.Substring(0, 32);
             right += message.Substring(32, 32);
-            // k = keyRounds(key, k);
-
 
             //16 rounds of key perm and DES
             for (int i = 0; i < 16; i++)
@@ -445,10 +415,8 @@ namespace TripleDES.Support
                 right = xorFunction(temp, function);
             }
             //clear message, append right then left
-
             message = null;
             message = right + left;
-            //message get final permutation
             message = finalPerm(message);
             return message;
         }
@@ -465,15 +433,13 @@ namespace TripleDES.Support
             string function = null;
 
             right += message.Substring(0, 32);
-            left += message.Substring(32, 32);
-           
+            left += message.Substring(32, 32);          
 
             //16 rounds
             for (int i = 0; i < 16; i++)
             {
                 //sets temp key
                 string tempKey = k[15 - i];
-
                 //create tempRight 
                 string tempRight = right;
                 //right becomes left
@@ -486,11 +452,9 @@ namespace TripleDES.Support
             //clear message, append right then left
             message = null;
             message = left + right;
-            //message get final permutation
             message = finalPerm(message);
             return message;
         }
-
         /// <summary>
         /// 
         /// </summary>
@@ -520,7 +484,6 @@ namespace TripleDES.Support
                 message += "00100000";
 
             }
-
             //not sure how big to make this array, holds 64 bit
             string[] outputs = new string[10];
             //64 bits of message to processes
@@ -538,8 +501,7 @@ namespace TripleDES.Support
             string e1 = null;
             string d1 = null;
             string e2 = null;
-
-
+            
             //breaks up large message into 64bit chunks and then store them into outs string and
             //then puts into outputs array. Each elemment holds single string
             while (message.Length != 0)
@@ -572,7 +534,6 @@ namespace TripleDES.Support
             return outs;
 
         }
-
         /// <summary>
         /// 
         /// </summary>
@@ -582,7 +543,6 @@ namespace TripleDES.Support
         /// <returns></returns>
         public static string tdesDecrypt(string message, string key1, string key2)
         {
-
             //not sure how big to make this array, holds 64 bit
             string[] outputs = new string[10];
             //64 bits of message to processes
@@ -604,8 +564,7 @@ namespace TripleDES.Support
             //breaks up large message into 64bit chunks and then store them into outs string and
             //then puts into outputs array. Each elemment holds single string
             while (message.Length != 0)
-            {
-                
+            {                
                 //input is 64 bits of message
                 input = message.Substring(0, 64);
                 //first 64 bits removed from message
@@ -628,7 +587,6 @@ namespace TripleDES.Support
                 
                 }*/
             }
-
             //converts outs to text
 
             List<Byte> byteList = new List<Byte>();
