@@ -93,7 +93,7 @@ namespace TripleDES.User_Controls
                 foreach (ParseObject message in usermessages)
                 {
                     // TODO: when encrypted need to decryipt here 
-                    lbInbox.Items.Add("From:" + message.Get<string>("FromID") + "  Subject:" + message.Get<string>("Subject"));
+                    lbInbox.Items.Add("From:" + message.Get<string>("FromID") + "  Subject: " + message.Get<string>("Subject"));
                 }
 
                 //reset the current index
@@ -133,7 +133,7 @@ namespace TripleDES.User_Controls
                     ParseObject message = new ParseObject("Messages");
                     message["FromID"] = from;
                     message["ToID"] = to;
-                    message["Message"] = Support.TripleDesAlgo.tdesEncrypt(body, "0011101100111000100110000011011100010101001000001111011101011110", "1001001000101111101101010001000011000111000111110100001101101110");
+                    message["Message"] = Support.TripleDesAlgo.tdesEncrypt(body, Globals.k1, Globals.k2);
                     message["Subject"] = subject;
                     message["SHA1"] = SHA1.SHA1.hashString(subject + body + tbSharedKeySend.Text);
                     if (tbFilePath.Text != "")
@@ -180,10 +180,10 @@ namespace TripleDES.User_Controls
                 //convert the userInbox to list then grab the index of the lb 
                 ParseObject message = userInbox.ToList()[seletedMessage];
 
-                string body = Support.TripleDesAlgo.tdesDecrypt(message.Get<string>("Message"), "0011101100111000100110000011011100010101001000001111011101011110", "1001001000101111101101010001000011000111000111110100001101101110"); 
+                string body = Support.TripleDesAlgo.tdesDecrypt(message.Get<string>("Message"), Globals.k1, Globals.k2); 
 
                 //recompute the SHA
-                string computedSHA = SHA1.SHA1.hashString(message.Get<string>("Subject") + message.Get<string>("Message") + tbSharedKeyReceive.Text);
+                string computedSHA = SHA1.SHA1.hashString(message.Get<string>("Subject") + body + tbSharedKeyReceive.Text);
 
                 if (computedSHA != message.Get<string>("SHA1"))
                 {

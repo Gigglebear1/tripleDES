@@ -639,6 +639,13 @@ namespace TripleDES.Support
                 message += charBitStr;
             }
 
+            //padding with spaces
+            while (message.Length % 64 != 0)
+            {
+                message += "00100000";
+
+            }
+
             //not sure how big to make this array, holds 64 bit
             string[] outputs = new string[10];
             //64 bits of message to processes
@@ -662,12 +669,7 @@ namespace TripleDES.Support
             //then puts into outputs array. Each elemment holds single string
             while (message.Length != 0)
             {
-                //padding
-                while (message.Length < 64)
-                {
-                    message += "00010000";
-
-                }
+                
                 //input is 64 bits of message
                 input = message.Substring(0, 64);
                 //first 64 bits removed from message
@@ -703,22 +705,8 @@ namespace TripleDES.Support
         /// <param name="key1"></param>
         /// <param name="key2"></param>
         /// <returns></returns>
-        public static string tdesDecrypt(string strInput, string key1, string key2)
+        public static string tdesDecrypt(string message, string key1, string key2)
         {
-
-            string message = "";
-            foreach (char ch in strInput)
-            {
-                string charBitStr = Convert.ToString((int)ch, 2);
-
-                //make sure that it is a byte that comes out
-                while (charBitStr.Length < 8)
-                {
-                    charBitStr = '0' + charBitStr;
-                }
-
-                message += charBitStr;
-            }
 
             //not sure how big to make this array, holds 64 bit
             string[] outputs = new string[10];
@@ -767,16 +755,15 @@ namespace TripleDES.Support
             }
 
             //converts outs to text
-            string final = ""; 
+
+            List<Byte> byteList = new List<Byte>();
+
             for (int j = 0; j < outs.Length; j += 8)
             {
-                String t = outs.Substring(j, 8);
-
-                final += Convert.ToByte(t, 2);
+                byteList.Add(Convert.ToByte(outs.Substring(j, 8), 2));
             }
 
-
-            return final.TrimEnd();
+            return Encoding.ASCII.GetString(byteList.ToArray()).TrimEnd();
 
         }
     }
