@@ -84,71 +84,20 @@ namespace TripleDES.Support
         //does initial perm of message
         private static string initialPerm(string ins)
         {
+
+            int[] xArray = { 57, 59, 61, 63, 56, 58, 60, 62 };
             string outs = null;
-            int x = 57;
-            //first row
-            for (int i = 0; i < 8; i++)
+
+            foreach (int num in xArray)
             {
-                outs += ins.Substring(x, 1);
-                //out.append(in, x, 1);
-                x = x - 8;
+                int x = num;
+                for (int i = 0; i < 8; i++)
+                {
+                    outs += ins.Substring(x, 1);
+                    x = x - 8;
+                }
             }
-            //second row
-            x = 59;
-            for (int i = 0; i < 8; i++)
-            {
-                outs += ins.Substring(x, 1);
-                //out.append(in, x, 1);
-                x = x - 8;
-            }
-            //third row
-            x = 61;
-            for (int i = 0; i < 8; i++)
-            {
-                outs += ins.Substring(x, 1);
-                //out.append(in, x, 1);
-                x = x - 8;
-            }
-            //fourth row
-            x = 63;
-            for (int i = 0; i < 8; i++)
-            {
-                outs += ins.Substring(x, 1);
-                //out.append(in, x, 1);
-                x = x - 8;
-            }
-            //fifth row
-            x = 56;
-            for (int i = 0; i < 8; i++)
-            {
-                outs += ins.Substring(x, 1);
-                //out.append(in, x, 1);
-                x = x - 8;
-            }
-            //sixth row
-            x = 58;
-            for (int i = 0; i < 8; i++)
-            {
-                outs += ins.Substring(x, 1);
-                //out.append(in, x, 1);
-                x = x - 8;
-            }
-            //7th row
-            x = 60;
-            for (int i = 0; i < 8; i++)
-            {
-                outs += ins.Substring(x, 1);
-                //out.append(in, x, 1);
-                x = x - 8;
-            }
-            //8th row
-            x = 62;
-            for (int i = 0; i < 8; i++)
-            {
-                outs += ins.Substring(x, 1);
-                //out.append(in, x, 1);
-                x = x - 8;
-            }
+            
             return outs;
         }
         //final permutation
@@ -165,23 +114,15 @@ namespace TripleDES.Support
             int h = 31;
             for (int i = 0; i < 8; i++)
             {
-                outs += ins.Substring(a, 1);
-                outs += ins.Substring(b, 1);
-                outs += ins.Substring(c, 1);
-                outs += ins.Substring(d, 1);
-                outs += ins.Substring(e, 1);
-                outs += ins.Substring(f, 1);
-                outs += ins.Substring(g, 1);
-                outs += ins.Substring(h, 1);
+                outs += ins.Substring(a--, 1);
+                outs += ins.Substring(b--, 1);
+                outs += ins.Substring(c--, 1);
+                outs += ins.Substring(d--, 1);
+                outs += ins.Substring(e--, 1);
+                outs += ins.Substring(f--, 1);
+                outs += ins.Substring(g--, 1);
+                outs += ins.Substring(h--, 1);
               
-                a -= 1;
-                b -= 1;
-                c -= 1;
-                d -= 1;
-                e -= 1;
-                f -= 1;
-                g -= 1;
-                h -= 1;
             }
             return outs;
         }
@@ -194,23 +135,18 @@ namespace TripleDES.Support
             //first 6 bits append to out
             outs += ins.Substring(31, 1);
             outs += ins.Substring(0, 5);
-            /*out.append(in, 31, 1);
-            out.append(in, 0, 5);*/
+            
             //creates the other 6 chunks
             for (int i = 0; i < 6; i++)
             {
                 outs += ins.Substring(x, 6);
-                //out.append(in, x, 6);
                 x += 4;
             }
-            //last chunk of 6 bits
-            /*out.append(in, 27, 31);
-            out.append(in, 0, 1);*/
-            ///////////////////////////////////////////////////CHANGED
+
             outs += ins.Substring(27, 5);
             outs += ins.Substring(0, 1);
+
             //return expansion string
-            //cout << out;
             return outs;
 
         }
@@ -240,44 +176,13 @@ namespace TripleDES.Support
         private static string permutation(string ins)
         {
             string outs = null;
-      
-            outs += ins.Substring(15, 1);
-            outs += ins.Substring(6, 1);
-            outs += ins.Substring(19, 1);
-            outs += ins.Substring(20, 1);
-            outs += ins.Substring(28, 1);
-       
-            outs += ins.Substring(11, 1);
-            outs += ins.Substring(27, 1);
-            outs += ins.Substring(16, 1);
-            outs += ins.Substring(0, 1);
-            outs += ins.Substring(14, 1);
-          
-            outs += ins.Substring(22, 1);
-            outs += ins.Substring(25, 1);
-            outs += ins.Substring(4, 1);
-            outs += ins.Substring(17, 1);
-            outs += ins.Substring(30, 1);
-        
-            outs += ins.Substring(9, 1);
-            outs += ins.Substring(1, 1);
-            outs += ins.Substring(7, 1);
-            outs += ins.Substring(23, 1);
-            outs += ins.Substring(13, 1);
-           
-            outs += ins.Substring(31, 1);
-            outs += ins.Substring(26, 1);
-            outs += ins.Substring(2, 1);
-            outs += ins.Substring(8, 1);
-            outs += ins.Substring(18, 1);
-          
-            outs += ins.Substring(12, 1);
-            outs += ins.Substring(29, 1);
-            outs += ins.Substring(5, 1);
-            outs += ins.Substring(21, 1);
-            outs += ins.Substring(10, 1);
-            outs += ins.Substring(3, 1);
-            outs += ins.Substring(24, 1);
+            int[] perm = {15,6,19,20,28,11,27,16,0,14,22,25,4,17,30,9,1,7,23,13,31,26,2,8,18,12,29,5,21,10,3,24};
+
+            foreach (int x in perm)
+            {
+                outs += ins.Substring(x, 1);
+            }
+            
             return outs;
         }
         //takes right and key, send to expansionFunction, xor function,
@@ -297,12 +202,10 @@ namespace TripleDES.Support
             for (int i = 0; i < 8; i++)
             {
                 chunk += ins.Substring(x, 6);
-                //chunk.append(in, x, 6);
                 x += 6;
                 xorArray[i] = chunk;
                 chunk = null;
-                ///////////KEEP AN EYE ON THIS CLEAR//////////////////////////////////////////////////////////
-                //chunk.clear();
+                
             }
             //loops chunks and gets values from sBox lookup
             for (int i = 0; i < 8; i++)
@@ -316,11 +219,8 @@ namespace TripleDES.Support
                 //gets first and last bit for row
                 row += a.Substring(0, 1);
                 row += a.Substring(5, 1);
-                /*row.append(a, 0, 1);
-                row.append(a, 5, 1);*/
+
                 r = binaryToInt(row);
-                //get middle bits for column
-                //column.append(a, 1, 4);
                 column += a.Substring(1, 4);
                 c = binaryToInt(column);
                 //lookup in sBox
@@ -328,42 +228,34 @@ namespace TripleDES.Support
                 {
                     case 0:
                         value = s1[r, c];
-                        //mangler.append(intToBinary(value));
                         mangler += intToBinary(value);
                         break;
                     case 1:
                         value = s2[r, c];
-                        //mangler.append(intToBinary(value));
                         mangler += intToBinary(value);
                         break;
                     case 2:
                         value = s3[r, c];
-                        //mangler.append(intToBinary(value));
                         mangler += intToBinary(value);
                         break;
                     case 3:
                         value = s4[r, c];
                         mangler += intToBinary(value);
-                        //mangler.append(intToBinary(value));
                         break;
                     case 4:
                         value = s5[r, c];
-                        //mangler.append(intToBinary(value));
                         mangler += intToBinary(value);
                         break;
                     case 5:
                         value = s6[r, c];
-                        //mangler.append(intToBinary(value));
                         mangler += intToBinary(value);
                         break;
                     case 6:
                         value = s7[r, c];
-                        //mangler.append(intToBinary(value));
                         mangler += intToBinary(value);
                         break;
                     case 7:
                         value = s8[r, c];
-                        //mangler.append(intToBinary(value));
                         mangler += intToBinary(value);
                         break;
                     default:
@@ -510,10 +402,6 @@ namespace TripleDES.Support
                 //shifts twice
                 else
                 {
-                    /*e.append(c, 2, 26);
-                    e.append(c, 0, 2);
-                    f.append(d, 2, 26);
-                    f.append(d, 0, 2);*/
                     e += c.Substring(2, 26);
                     e += c.Substring(0, 2);
                     f += d.Substring(2, 26);
@@ -521,13 +409,9 @@ namespace TripleDES.Support
                     outs = e + f;
                     outs = keyFinalPerm(outs);
                     arr[i] = outs;
-                    //cout << i << " :\n" << out << "\n";	
                 }
                 c = e;
                 d = f;
-                /*e.clear();
-                f.clear();
-                out.clear();*/
                 e = null;
                 f = null;
                 outs = null;
@@ -550,7 +434,6 @@ namespace TripleDES.Support
 
 
             //16 rounds of key perm and DES
-            // Console.WriteLine("ENCRYPTION");
             for (int i = 0; i < 16; i++)
             {
                 //sends right and key to desFunction
@@ -560,8 +443,6 @@ namespace TripleDES.Support
                 left = right;
                 //right becomes left xor with mangler
                 right = xorFunction(temp, function);
-                // Console.WriteLine("Left \t" + left);
-                //Console.WriteLine("Right \t" + right);
             }
             //clear message, append right then left
 
@@ -582,20 +463,16 @@ namespace TripleDES.Support
             string right = null;
             string left = null;
             string function = null;
-            /*right.append(message, 0, 32);
-            left.append(message, 32, 63);*/
+
             right += message.Substring(0, 32);
             left += message.Substring(32, 32);
-            //creates array of keys
-            // k = keyRounds(key, k);
-            //  Console.WriteLine("DECRYPTION");
+           
 
             //16 rounds
             for (int i = 0; i < 16; i++)
             {
                 //sets temp key
                 string tempKey = k[15 - i];
-                //cout << "k:"<<i <<" " << tempKey << endl;
 
                 //create tempRight 
                 string tempRight = right;
@@ -605,8 +482,6 @@ namespace TripleDES.Support
                 function = desFunction(right, tempKey);
                 //left becomes xor or right
                 left = xorFunction(function, tempRight);
-                // Console.WriteLine("Left \t" + left);
-                //Console.WriteLine("RIght \t" + right);
             }
             //clear message, append right then left
             message = null;
