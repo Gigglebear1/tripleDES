@@ -638,7 +638,7 @@ namespace TripleDES.Support
                 byteList.Add(Convert.ToByte(outs.Substring(j, 8), 2));
             }
 
-            return Encoding.ASCII.GetString(byteList.ToArray()).TrimEnd();
+            return Encoding.Default.GetString(byteList.ToArray());
 
         }
     }

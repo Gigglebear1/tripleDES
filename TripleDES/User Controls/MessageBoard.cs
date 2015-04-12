@@ -138,7 +138,7 @@ namespace TripleDES.User_Controls
                     message["ToID"] = to;
                     message["Message"] = Support.TripleDesAlgo.tdesEncrypt(body, Globals.k1, Globals.k2);
                     message["Subject"] = subject;
-                    message["SHA1"] = SHA1.SHA1.hashString(subject + body + tbSharedKeySend.Text);
+                    message["SHA1"] = SHA1.SHA1.hashString(subject.Trim() + body.Trim() + tbSharedKeySend.Text.Trim());
                     
                     // If a file is included
                     if (tbFilePath.Text != "")
@@ -146,20 +146,23 @@ namespace TripleDES.User_Controls
                         string filepath = tbFilePath.Text.ToString().Trim();
                         string filename = filepath.Substring(filepath.LastIndexOf("\\"));
                         FileStream file = File.Open(filepath, FileMode.Open);
-                        FileStream encfile = File.Open(".encfile" + filepath.Substring(filepath.LastIndexOf(".")), FileMode.Create);
+                        FileStream encfile = File.Open(".encfile" + filepath.Substring(filepath.LastIndexOf(".")), FileMode.Truncate);
                         StreamWriter writer = new StreamWriter(encfile);
 
                         // 3DES encrypt the file, and also calculate a checksum at the same time. Do it with the subject and key for integrity
                         BigInteger sum = 0;
-                        byte[] array = new byte[4096];
+                        byte[] array = new byte[8];
                         while (file.Read(array, 0, array.Length) != 0)
                         {
-                            string result = System.Text.Encoding.Default.GetString(array);
+                            string result = System.Text.Encoding.Default.GetString(array).TrimEnd(new char[] { (char)0 });
                             string sha = SHA1.SHA1.hashString(subject + result + tbSharedKeySend.Text);
                             string tdes = Support.TripleDesAlgo.tdesEncrypt(result, Globals.k1, Globals.k2);
                             sum += BigInteger.Parse(sha, System.Globalization.NumberStyles.AllowHexSpecifier);
                             writer.Write(tdes);
+                            Array.Clear(array, 0, array.Length);
                         }
+
+                        writer.Flush();
 
                         // Reset the stream back to the start of the encrypted file
                         encfile.Seek(0, SeekOrigin.Begin);
@@ -169,15 +172,20 @@ namespace TripleDES.User_Controls
 
                         // Get the last 40 hex characters of the checksum
                         // Whole checksum will be modified by any file changes so we still have collision resistance
-                        message["Checksum"] = sum.ToString("40X");
+                        string checksum = sum.ToString();
+                        message["Checksum"] = checksum.Substring(checksum.Length-40);
+
+                        await message.SaveAsync();
 
                         // Close file
                         file.Close();
 
-                        await message.SaveAsync();
-
                         // Close encfile
                         encfile.Close();
+                    }
+                    else
+                    {
+                        await message.SaveAsync();
                     }
 
                     MessageBox.Show("Message sent sucessful");
@@ -220,7 +228,7 @@ namespace TripleDES.User_Controls
                 string body = Support.TripleDesAlgo.tdesDecrypt(message.Get<string>("Message"), Globals.k1, Globals.k2); 
 
                 //recompute the SHA
-                string computedSHA = SHA1.SHA1.hashString(message.Get<string>("Subject") + body + tbSharedKeyReceive.Text);
+                string computedSHA = SHA1.SHA1.hashString(message.Get<string>("Subject").Trim() + body.Trim() + tbSharedKeyReceive.Text.Trim());
 
                 if (computedSHA != message.Get<string>("SHA1"))
                 {
@@ -232,7 +240,7 @@ namespace TripleDES.User_Controls
                 if (tbSaveTo.Text != "")
                 {
                     string filepath = tbSaveTo.Text.ToString().Trim();
-                    string encpath = ".encfile." + filepath.Substring(filepath.LastIndexOf("."));
+                    string encpath = ".encfile" + filepath.Substring(filepath.LastIndexOf("."));
                     ParseFile parseFile = message.Get<ParseFile>("File");
                     WebClient client = new WebClient();
                     client.DownloadFile(parseFile.Url.AbsoluteUri, encpath);
@@ -248,6 +256,7 @@ namespace TripleDES.User_Controls
                         string result = System.Text.Encoding.Default.GetString(array);
                         string decrypt = Support.TripleDesAlgo.tdesDecrypt(result, Globals.k1, Globals.k2);
                         writer.Write(decrypt);
+                        Array.Clear(array, 0, array.Length);
                     }
 
                     file.Close();
@@ -298,7 +307,7 @@ namespace TripleDES.User_Controls
             try
             {
                 var FD = new System.Windows.Forms.OpenFileDialog();
-                FD.Filter = "Text Files (.txt)|*.txt";
+                FD.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
                 if (FD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     tbFilePath.Text = FD.FileName;
@@ -315,7 +324,7 @@ namespace TripleDES.User_Controls
             try
             {
                 var FD = new System.Windows.Forms.SaveFileDialog();
-                FD.Filter = "Text Files (.txt)|*.txt";
+                FD.Filter = "Text Files (.txt)|*.txt|All Files (*.*)|*.*";
                 if (FD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     tbSaveTo.Text = FD.FileName;
