@@ -30,6 +30,8 @@
         {
             this.bttnLogOut = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tbFilePath = new System.Windows.Forms.TextBox();
+            this.bttnAttachFile = new System.Windows.Forms.Button();
             this.tbSharedKeySend = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.bttnSend = new System.Windows.Forms.Button();
@@ -47,8 +49,6 @@
             this.bttnView = new System.Windows.Forms.Button();
             this.lbInbox = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.bttnAttachFile = new System.Windows.Forms.Button();
-            this.tbFilePath = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -84,6 +84,23 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Send";
+            // 
+            // tbFilePath
+            // 
+            this.tbFilePath.Location = new System.Drawing.Point(94, 316);
+            this.tbFilePath.Name = "tbFilePath";
+            this.tbFilePath.Size = new System.Drawing.Size(173, 20);
+            this.tbFilePath.TabIndex = 9;
+            // 
+            // bttnAttachFile
+            // 
+            this.bttnAttachFile.Location = new System.Drawing.Point(13, 313);
+            this.bttnAttachFile.Name = "bttnAttachFile";
+            this.bttnAttachFile.Size = new System.Drawing.Size(75, 23);
+            this.bttnAttachFile.TabIndex = 8;
+            this.bttnAttachFile.Text = "Attach File";
+            this.bttnAttachFile.UseVisualStyleBackColor = true;
+            this.bttnAttachFile.Click += new System.EventHandler(this.bttnAttachFile_Click);
             // 
             // tbSharedKeySend
             // 
@@ -253,23 +270,6 @@
             this.label3.Size = new System.Drawing.Size(33, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "Inbox";
-            // 
-            // bttnAttachFile
-            // 
-            this.bttnAttachFile.Location = new System.Drawing.Point(13, 313);
-            this.bttnAttachFile.Name = "bttnAttachFile";
-            this.bttnAttachFile.Size = new System.Drawing.Size(75, 23);
-            this.bttnAttachFile.TabIndex = 8;
-            this.bttnAttachFile.Text = "Attach File";
-            this.bttnAttachFile.UseVisualStyleBackColor = true;
-            this.bttnAttachFile.Click += new System.EventHandler(this.bttnAttachFile_Click);
-            // 
-            // tbFilePath
-            // 
-            this.tbFilePath.Location = new System.Drawing.Point(94, 316);
-            this.tbFilePath.Name = "tbFilePath";
-            this.tbFilePath.Size = new System.Drawing.Size(173, 20);
-            this.tbFilePath.TabIndex = 9;
             // 
             // MessageBoard
             // 

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 using Parse;
 
 
@@ -114,7 +116,6 @@ namespace TripleDES.User_Controls
         /// <param name="e"></param>
         private async void bttnSend_Click(object sender, EventArgs e)
         {
-
             try
             {
                 //gather all the information to compose the message
@@ -122,6 +123,7 @@ namespace TripleDES.User_Controls
                 string body = tbBody.Text.ToString().Trim();
                 string to = cbTo.SelectedItem.ToString().Trim();
                 string from = Globals.currentUser.Username.ToString().Trim();
+                string key = tbSharedKeySend.Text.ToString().Trim();
 
                 if (subject == "" || body == "" || to == "Select User Name")
                 {
@@ -136,9 +138,41 @@ namespace TripleDES.User_Controls
                     message["Message"] = Support.TripleDesAlgo.tdesEncrypt(body, Globals.k1, Globals.k2);
                     message["Subject"] = subject;
                     message["SHA1"] = SHA1.SHA1.hashString(subject + body + tbSharedKeySend.Text);
+                    
+                    // If a file is included
                     if (tbFilePath.Text != "")
                     {
+                        string filepath = tbFilePath.Text.ToString().Trim();
+                        string filename = filepath.Substring(filepath.LastIndexOf("\\"));
+                        FileStream file = File.Open(filepath, FileMode.Open);
+                        FileStream encfile = File.Open(".encfile." + filepath.Substring(filepath.LastIndexOf(".")), FileMode.Create);
+                        StreamWriter writer = new StreamWriter(encfile);
 
+                        // 3DES encrypt the file, and also calculate a checksum at the same time. Do it with the subject and key for integrity
+                        BigInteger sum = 0;
+                        byte[] array = new byte[4096];
+                        while (file.Read(array, 0, array.Length) != 0)
+                        {
+                            string result = System.Text.Encoding.Default.GetString(array);
+                            string sha = SHA1.SHA1.hashString(subject + result + tbSharedKeySend.Text);
+                            string tdes = Support.TripleDesAlgo.tdesEncrypt(result, Globals.k1, Globals.k2);
+                            sum += BigInteger.Parse(sha, System.Globalization.NumberStyles.AllowHexSpecifier);
+                            writer.Write(tdes);
+                        }
+
+                        // Reset the stream back to the start of the encrypted file
+                        encfile.Seek(0, SeekOrigin.Begin);
+
+                        // Send the encrypted file with the filename
+                        message["File"] = new ParseFile(filename, encfile);
+
+                        // Get the last 40 hex characters of the checksum
+                        // Whole checksum will be modified by any file changes so we still have collision resistance
+                        message["Checksum"] = sum.ToString("40X");
+
+                        // Close both the files
+                        file.Close();
+                        encfile.Close();
                     }
                     await message.SaveAsync();
 
@@ -155,7 +189,6 @@ namespace TripleDES.User_Controls
             {
                 MessageBox.Show(exception.Message.ToString().Trim());
             }
-
         }
 
         /// <summary>
