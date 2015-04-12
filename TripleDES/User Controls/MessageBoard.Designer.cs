@@ -49,6 +49,8 @@
             this.bttnView = new System.Windows.Forms.Button();
             this.lbInbox = new System.Windows.Forms.ListBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.tbSaveTo = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -177,6 +179,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.tbSaveTo);
+            this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.lbWarning);
             this.groupBox2.Controls.Add(this.bttnLogOut);
             this.groupBox2.Controls.Add(this.tbSharedKeyReceive);
@@ -206,7 +210,7 @@
             // 
             // tbSharedKeyReceive
             // 
-            this.tbSharedKeyReceive.Location = new System.Drawing.Point(36, 131);
+            this.tbSharedKeyReceive.Location = new System.Drawing.Point(143, 107);
             this.tbSharedKeyReceive.Name = "tbSharedKeyReceive";
             this.tbSharedKeyReceive.Size = new System.Drawing.Size(135, 20);
             this.tbSharedKeyReceive.TabIndex = 9;
@@ -214,7 +218,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(72, 115);
+            this.label5.Location = new System.Drawing.Point(26, 110);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(62, 13);
             this.label5.TabIndex = 8;
@@ -243,7 +247,7 @@
             // 
             // bttnView
             // 
-            this.bttnView.Location = new System.Drawing.Point(222, 131);
+            this.bttnView.Location = new System.Drawing.Point(222, 156);
             this.bttnView.Margin = new System.Windows.Forms.Padding(2);
             this.bttnView.Name = "bttnView";
             this.bttnView.Size = new System.Drawing.Size(64, 20);
@@ -270,6 +274,24 @@
             this.label3.Size = new System.Drawing.Size(33, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "Inbox";
+            // 
+            // button1
+            // 
+            this.button1.AccessibleName = "";
+            this.button1.Location = new System.Drawing.Point(29, 131);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Save To";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnSaveFile_Click);
+            // 
+            // tbSaveTo
+            // 
+            this.tbSaveTo.Location = new System.Drawing.Point(143, 133);
+            this.tbSaveTo.Name = "tbSaveTo";
+            this.tbSaveTo.Size = new System.Drawing.Size(135, 20);
+            this.tbSaveTo.TabIndex = 13;
             // 
             // MessageBoard
             // 
@@ -311,5 +333,7 @@
         private System.Windows.Forms.Label lbWarning;
         private System.Windows.Forms.TextBox tbFilePath;
         private System.Windows.Forms.Button bttnAttachFile;
+        private System.Windows.Forms.TextBox tbSaveTo;
+        private System.Windows.Forms.Button button1;
     }
 }

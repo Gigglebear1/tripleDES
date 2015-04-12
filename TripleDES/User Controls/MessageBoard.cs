@@ -5,6 +5,7 @@ using System.IO;
 using System.Drawing;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -145,7 +146,7 @@ namespace TripleDES.User_Controls
                         string filepath = tbFilePath.Text.ToString().Trim();
                         string filename = filepath.Substring(filepath.LastIndexOf("\\"));
                         FileStream file = File.Open(filepath, FileMode.Open);
-                        FileStream encfile = File.Open(".encfile." + filepath.Substring(filepath.LastIndexOf(".")), FileMode.Create);
+                        FileStream encfile = File.Open(".encfile" + filepath.Substring(filepath.LastIndexOf(".")), FileMode.Create);
                         StreamWriter writer = new StreamWriter(encfile);
 
                         // 3DES encrypt the file, and also calculate a checksum at the same time. Do it with the subject and key for integrity
@@ -170,11 +171,14 @@ namespace TripleDES.User_Controls
                         // Whole checksum will be modified by any file changes so we still have collision resistance
                         message["Checksum"] = sum.ToString("40X");
 
-                        // Close both the files
+                        // Close file
                         file.Close();
+
+                        await message.SaveAsync();
+
+                        // Close encfile
                         encfile.Close();
                     }
-                    await message.SaveAsync();
 
                     MessageBox.Show("Message sent sucessful");
 
@@ -224,6 +228,32 @@ namespace TripleDES.User_Controls
                     lbWarning.Text = warning;
                 }
 
+                // Handle files
+                if (tbSaveTo.Text != "")
+                {
+                    string filepath = tbSaveTo.Text.ToString().Trim();
+                    string encpath = ".encfile." + filepath.Substring(filepath.LastIndexOf("."));
+                    ParseFile parseFile = message.Get<ParseFile>("File");
+                    WebClient client = new WebClient();
+                    client.DownloadFile(parseFile.Url.AbsoluteUri, encpath);
+
+                    FileStream file = File.Open(encpath, FileMode.Open);
+                    StreamWriter writer = new StreamWriter(filepath);
+                    byte[] array = new byte[64];
+
+                    // Block size of 3des is 64 bits. We'll read 8 bytes at a time.
+                    // We can read 4096 at a time though.
+                    while (file.Read(array, 0, array.Length) != 0)
+                    {
+                        string result = System.Text.Encoding.Default.GetString(array);
+                        string decrypt = Support.TripleDesAlgo.tdesDecrypt(result, Globals.k1, Globals.k2);
+                        writer.Write(decrypt);
+                    }
+
+                    file.Close();
+                    writer.Close();
+                }
+                
                 tbViewBody.Text = body;
             }
             catch (Exception excpetion)
@@ -278,6 +308,23 @@ namespace TripleDES.User_Controls
 
             }
 
+        }
+
+        private void btnSaveFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var FD = new System.Windows.Forms.SaveFileDialog();
+                FD.Filter = "Text Files (.txt)|*.txt";
+                if (FD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    tbSaveTo.Text = FD.FileName;
+                }
+            }
+            catch (Exception exception)
+            {
+
+            }
         }
     }
 }
