@@ -155,7 +155,7 @@ namespace TripleDES.User_Controls
                         while (file.Read(array, 0, array.Length) != 0)
                         {
                             string result = System.Text.Encoding.Default.GetString(array).TrimEnd(new char[] { (char)0 });
-                            string sha = SHA1.SHA1.hashString(subject + result + tbSharedKeySend.Text);
+                            string sha = SHA1.SHA1.hashString(subject + result.TrimEnd() + tbSharedKeySend.Text);
                             string tdes = Support.TripleDesAlgo.tdesEncrypt(result, Globals.k1, Globals.k2);
                             sum += BigInteger.Parse(sha, System.Globalization.NumberStyles.AllowHexSpecifier);
                             writer.Write(tdes);
@@ -248,6 +248,7 @@ namespace TripleDES.User_Controls
                     FileStream file = File.Open(encpath, FileMode.Open);
                     StreamWriter writer = new StreamWriter(filepath);
                     byte[] array = new byte[64];
+                    BigInteger sum = 0;
 
                     // Block size of 3des is 64 bits. We'll read 8 bytes at a time.
                     // We can read 4096 at a time though.
@@ -255,8 +256,17 @@ namespace TripleDES.User_Controls
                     {
                         string result = System.Text.Encoding.Default.GetString(array);
                         string decrypt = Support.TripleDesAlgo.tdesDecrypt(result, Globals.k1, Globals.k2);
+                        string sha = SHA1.SHA1.hashString(message.Get<string>("Subject") + decrypt.TrimEnd() + tbSharedKeySend.Text);
+                        sum += BigInteger.Parse(sha, System.Globalization.NumberStyles.AllowHexSpecifier);
                         writer.Write(decrypt);
                         Array.Clear(array, 0, array.Length);
+                    }
+                    
+                    string checksum = sum.ToString();
+
+                    if (message.Get<string>("Checksum") != checksum.Substring(checksum.Length - 40))
+                    {
+                        MessageBox.Show("WARNING!!!!\nThe file has been tampered with or you entered an incorrect Shared Key");
                     }
 
                     file.Close();
