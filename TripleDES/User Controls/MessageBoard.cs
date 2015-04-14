@@ -155,7 +155,7 @@ namespace TripleDES.User_Controls
                         while (file.Read(array, 0, array.Length) != 0)
                         {
                             string result = System.Text.Encoding.Default.GetString(array).TrimEnd(new char[] { (char)0 });
-                            string sha = SHA1.SHA1.hashString(subject + result.TrimEnd() + tbSharedKeySend.Text);
+                            string sha = SHA1.SHA1.hashString(subject + result.TrimEnd() + tbSharedKeySend.Text.Trim());
                             string tdes = Support.TripleDesAlgo.tdesEncrypt(result, Globals.k1, Globals.k2);
                             sum += BigInteger.Parse(sha, System.Globalization.NumberStyles.AllowHexSpecifier);
                             writer.Write(tdes);
@@ -256,10 +256,11 @@ namespace TripleDES.User_Controls
                     {
                         string result = System.Text.Encoding.Default.GetString(array);
                         string decrypt = Support.TripleDesAlgo.tdesDecrypt(result, Globals.k1, Globals.k2);
-                        string sha = SHA1.SHA1.hashString(message.Get<string>("Subject") + decrypt.TrimEnd() + tbSharedKeySend.Text);
+                        string sha = SHA1.SHA1.hashString(message.Get<string>("Subject") + decrypt.TrimEnd() + tbSharedKeyReceive.Text.Trim());
                         sum += BigInteger.Parse(sha, System.Globalization.NumberStyles.AllowHexSpecifier);
                         writer.Write(decrypt);
                         Array.Clear(array, 0, array.Length);
+                        
                     }
                     
                     string checksum = sum.ToString();
