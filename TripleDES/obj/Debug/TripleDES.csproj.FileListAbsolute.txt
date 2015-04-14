@@ -29,3 +29,6 @@ C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.U
 C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.csproj.GenerateResource.Cache
 C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.exe
 C:\Users\Blake Burton\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.pdb
+C:\Users\Russ\Documents\GitHub\tripleDES\TripleDES\bin\Debug\TripleDES.exe.config
+C:\Users\Russ\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.exe
+C:\Users\Russ\Documents\GitHub\tripleDES\TripleDES\obj\Debug\TripleDES.pdb
